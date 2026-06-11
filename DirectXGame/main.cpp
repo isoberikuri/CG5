@@ -121,6 +121,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	// 1つの頂点のサイズ
 	vertexBufferView.StrideInBytes = sizeof(Vector4);
 
+
 	// 頂点リソースにデータを書き込む----------------------------------
 	Vector4* vertexData = nullptr;
 	vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
