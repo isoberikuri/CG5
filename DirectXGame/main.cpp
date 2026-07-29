@@ -1,7 +1,8 @@
 #include <Windows.h>
 #include "KamataEngine.h"
-#include <d3dcompiler.h>
 #include"Shader.h"
+#include <dxcapi.h>
+#pragma comment(lib, "dxcompiler.lib")
 
 using namespace KamataEngine;
 // 関数プロトタイプ宣言
@@ -63,22 +64,22 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	// 頂点シェーダの読み込みとコンパイル
 	Shader vs;
-	vs.Load(L"Resources/shaders/TestVS.hlsl", "vs_5_0");
-	assert(vs.GetBlob() != nullptr);
+	vs.LoadDxc(L"Resources/shaders/TestVS.hlsl", L"vs_6_0");
+	assert(vs.GetDxcBlob() != nullptr);
 
 	// ピクセルシェーダの読み込みとコンパイル
 	Shader ps;
-	ps.Load(L"Resources/shaders/TestPS.hlsl", "ps_5_0");
-	assert(ps.GetBlob() != nullptr);
+	ps.LoadDxc(L"Resources/shaders/TestPS.hlsl", L"ps_6_0");
+	assert(ps.GetDxcBlob() != nullptr);
 
 	// PSO(PipelinesStateObject)の生成
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 	graphicsPipelineStateDesc.pRootSignature = rootSignature;
-	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc;                                          // RootSignature
-	graphicsPipelineStateDesc.VS = {vs.GetBlob()->GetBufferPointer(), vs.GetBlob()->GetBufferSize()}; // vertexshader
-	graphicsPipelineStateDesc.PS = {ps.GetBlob()->GetBufferPointer(), ps.GetBlob()->GetBufferSize()}; // pixelshader
-	graphicsPipelineStateDesc.BlendState = blendDesc;                                                 // BlendState
-	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc;                                       // RasterizerState
+	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc;                                                // RootSignature
+	graphicsPipelineStateDesc.VS = {vs.GetDxcBlob()->GetBufferPointer(), vs.GetDxcBlob()->GetBufferSize()}; // vertexshader
+	graphicsPipelineStateDesc.PS = {ps.GetDxcBlob()->GetBufferPointer(), ps.GetDxcBlob()->GetBufferSize()}; // pixelshader
+	graphicsPipelineStateDesc.BlendState = blendDesc;                                                       // BlendState
+	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc;                                             // RasterizerState
 	// 書き込むRTVの情報
 	graphicsPipelineStateDesc.NumRenderTargets = 1; // 1つのRTVに書き込む  ※2つ同時にしようと考えればできる
 	graphicsPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -120,7 +121,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	vertexBufferView.SizeInBytes = sizeof(Vector4) * 3;
 	// 1つの頂点のサイズ
 	vertexBufferView.StrideInBytes = sizeof(Vector4);
-
 
 	// 頂点リソースにデータを書き込む----------------------------------
 	Vector4* vertexData = nullptr;
