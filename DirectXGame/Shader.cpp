@@ -71,6 +71,7 @@ void Shader::LoadDxc(const std::wstring& filePath, const std::wstring& shaderMod
 	// 2. Compileする
 	//    Compileに必要なコンパイルオプションの準備
 	LPCWSTR arguments[] = {
+	    filePath.c_str(),
 	    L"-E",
 	    L"main", // エントリーポイントの指定。基本的にmain意外にはしない
 	    L"-T",
