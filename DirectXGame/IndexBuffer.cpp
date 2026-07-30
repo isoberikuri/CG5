@@ -3,7 +3,6 @@
 
 #include <cassert>
 #include <d3d12.h>
-
 using namespace KamataEngine;
 
 // 生成
@@ -32,6 +31,7 @@ void IndexBuffer::Create(const UINT size, const UINT stride) {
 	indexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	// 実際にインデックスリソースを生成する
 	ID3D12Resource* indexResource = nullptr;
+	[[maybe_unused]]
 	HRESULT hr =
 	    dxCommon->GetDevice()->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE, &indexResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&indexResource));
 	assert(SUCCEEDED(hr)); // うまくいかなかったときは起動できない
