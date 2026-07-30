@@ -35,6 +35,7 @@ void SetupPipelineState(PipelineState& pipelineState, RootSignature& rs, Shader&
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
+
 	// BlendState ----------------        今回は不透明
 	D3D12_BLEND_DESC blendDesc{};
 	// すべての色要素を書き込む
